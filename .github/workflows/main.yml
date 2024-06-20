@@ -12,34 +12,51 @@ jobs:
       runs-on: macos-latest
       steps:
         - uses: actions/checkout@v3
-        - uses: actions/setup-java@v3
-          with:
-            distribution: 'zulu'
-            java-version: '12'
-        - uses: subosito/flutter-action@v2
-          with:
-            channel: 'stable'
-            architecture: x64
   
-        - run: flutter build apk --release --split-per-abi
-        - run: |
+        - name: Set up Java
+          uses: actions/setup-java@v3
+          with:
+            distribution: 'adopt'
+            java-version: '12.x'
+            
+        - name: Set up Flutter
+          uses: subosito/flutter-action@v1
+          with:
+            flutter-version: 'latest'
+            channel: 'stable'
+            
+        - name: Install dependencies
+          run: flutter pub get
+  
+        - name: Run tests
+          run: flutter test
+  
+        - name: Build Android APK
+          run: flutter build apk --debug --split-per-abi
+  
+        - name: Build iOS IPA
+          run: |
             flutter build ios --no-codesign
             cd build/ios/iphoneos
             mkdir Payload
-            cd Payload
-            ln -s ../Runner.app
-            cd ..
+            ln -s ../Runner.app Payload/Runner.app
             zip -r app.ipa Payload
-        - name: Push to Releases
+  
+        - name: Upload Release Artifacts
+          uses: actions/upload-artifact@v3
+          with:
+            name: release-artifacts
+            path: |
+              build/app/outputs/apk/debug/
+              build/ios/iphoneos/app.ipa
+  
+        - name: Create GitHub Release
           uses: ncipollo/release-action@v1
           with:
-            artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
+            artifacts: |
+              build/app/outputs/apk/debug/app-armeabi-v7a-debug.apk,
+              build/app/outputs/apk/debug/app-arm64-v8a-debug.apk,
+              build/app/outputs/apk/debug/app-x86_64-debug.apk,
+              build/ios/iphoneos/app.ipa
             tag: v1.0.${{ github.run_number }}
   
-  
-  
-  
-  
-  
-  # push to master, main, develop
-  # pull request on main master
