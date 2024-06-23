@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sencees/constants/app_colors.dart';
+import 'package:sencees/core/components/app_default_button.dart';
+import 'package:sencees/core/constants/app_colors.dart';
+import 'package:sencees/features/authentication/presentation/views/login_view.dart';
 import 'package:sencees/features/user_onboard/data/onboarding_items.dart';
-import 'package:sencees/features/user_onboard/presentation/widgets/get_started_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingView extends StatefulWidget {
@@ -25,7 +27,21 @@ class _OnboardingViewState extends State<OnboardingView> {
         color: Theme.of(context).primaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: isLastPage
-            ? const GetStartedButton()
+            ? Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: AppDefaultButton(
+                    text: "Get Started",
+                    backgroundColor: AppColors.appLightBlue,
+                    onPressed: () async {
+                      final pres = await SharedPreferences.getInstance();
+                      pres.setBool("onboarding", true);
+                      if (!context.mounted) return;
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginView()));
+                    }),
+              )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

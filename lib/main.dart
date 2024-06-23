@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sencees/configs/themes.dart';
+import 'package:sencees/core/configs/themes.dart';
+import 'package:sencees/features/authentication/presentation/views/login_view.dart';
 import 'package:sencees/features/user_onboard/presentation/views/onboarding_view.dart';
-import 'package:sencees/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
       themeMode: ThemeMode.system,
-      home: onboarding ? const Home() : const OnboardingView(),
+      home: onboarding ? const LoginView() : const OnboardingView(),
     );
   }
 }
