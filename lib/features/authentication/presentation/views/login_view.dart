@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sencees/core/components/app_default_button.dart';
 import 'package:sencees/core/constants/app_colors.dart';
+import 'package:sencees/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatelessWidget {
@@ -63,6 +64,11 @@ class LoginView extends StatelessWidget {
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setBool("onboarding", false);
+                  if (!context.mounted) return;
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DashboardView()));
                 },
               ),
               TextButton(
