@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sencees/core/components/app_default_button.dart';
-import 'package:sencees/core/constants/app_colors.dart';
-import 'package:sencees/features/authentication/presentation/views/login_view.dart';
-import 'package:sencees/features/user_onboard/data/onboarding_items.dart';
+import 'package:sencees/src/core/components/app_default_button.dart';
+import 'package:sencees/src/core/constants/app_colors.dart';
+import 'package:sencees/src/features/authentication/presentation/views/login_view.dart';
+import 'package:sencees/src/features/user_onboard/models/onboarding_items.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
