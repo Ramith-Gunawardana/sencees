@@ -7,6 +7,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final onboarding = prefs.getBool("onboarding") ?? false;
+  final accessToken = prefs.getString("accessToken");
 
-  runApp(ProviderScope(child: MyApp(onboarding: onboarding)));
+  runApp(ProviderScope(
+      child: MyApp(
+    onboarding: onboarding,
+    accessToken: accessToken,
+  )));
 }

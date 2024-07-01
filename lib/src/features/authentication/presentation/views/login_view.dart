@@ -5,7 +5,6 @@ import 'package:sencees/src/core/components/app_default_toast.dart';
 import 'package:sencees/src/core/constants/app_colors.dart';
 import 'package:sencees/src/features/authentication/controllers/login_controller.dart';
 import 'package:sencees/src/features/dashboard/presentation/views/dashboard_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
 class LoginView extends ConsumerStatefulWidget {
@@ -37,7 +36,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey, // Assign the form key here
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -161,9 +160,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
     try {
       await ref.read(authControllerProvider).signIn(username, password);
-
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setBool("onboarding", false);
 
       if (!mounted) return;
       Navigator.pushReplacement(

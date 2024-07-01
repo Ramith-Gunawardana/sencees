@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/login_model.dart';
 import '../repository/login_repo.dart';
 
@@ -18,7 +19,13 @@ class AuthController {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return Login.fromJson(data);
+      final login = Login.fromJson(data);
+
+      // Save access token to shared preferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('accessToken', login.accessToken ?? '');
+
+      return login;
     } else {
       final errorData = jsonDecode(response.body);
       final errorMessage = errorData['error'];

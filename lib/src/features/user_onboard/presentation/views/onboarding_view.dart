@@ -33,8 +33,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                     text: "Get Started",
                     backgroundColor: AppColors.appLightBlue,
                     onPressed: () async {
-                      final pres = await SharedPreferences.getInstance();
-                      pres.setBool("onboarding", true);
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool("onboarding", true);
                       if (!context.mounted) return;
                       Navigator.pushReplacement(
                           context,
