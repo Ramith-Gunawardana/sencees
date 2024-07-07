@@ -4,6 +4,7 @@ import 'package:sencees/src/core/components/app_default_button.dart';
 import 'package:sencees/src/core/components/app_default_toast.dart';
 import 'package:sencees/src/core/constants/app_colors.dart';
 import 'package:sencees/src/features/authentication/controllers/login_controller.dart';
+import 'package:sencees/src/features/authentication/presentation/views/register_view.dart';
 import 'package:sencees/src/features/dashboard/presentation/views/dashboard_view.dart';
 import 'package:toastification/toastification.dart';
 
@@ -31,7 +32,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -45,7 +45,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
-                    'Login',
+                    'Sign In',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -113,7 +113,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         onPressed: () => _handleLogin(),
                       ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (!mounted) return;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterView(),
+                      ),
+                    );
+                  },
                   child: RichText(
                     text: const TextSpan(
                       children: [

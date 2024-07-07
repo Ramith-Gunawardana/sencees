@@ -38,9 +38,9 @@ class AppThemes {
       dialogBackgroundColor: AppColors.appToastColorLight);
 
   static final darkTheme = ThemeData(
-      scaffoldBackgroundColor: AppColors.primaryDark,
       primaryColor: AppColors.primaryDark,
       brightness: Brightness.dark,
+      scaffoldBackgroundColor: AppColors.primaryDark,
       disabledColor: AppColors.appDisableColorDark,
       inputDecorationTheme: InputDecorationTheme(
         contentPadding:
