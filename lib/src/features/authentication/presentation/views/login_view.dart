@@ -55,7 +55,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 TextFormField(
                   controller: _usernameController,
                   decoration: const InputDecoration(
-                    hintText: 'Username',
+                    labelText: 'Username',
                     prefixIcon: Icon(Icons.person),
                   ),
                   validator: (value) {
@@ -65,12 +65,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _isObscured,
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    labelText: 'Password',
                     suffixIcon: IconButton(
                       icon: Icon(_isObscured
                           ? Icons.visibility

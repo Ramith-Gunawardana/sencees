@@ -21,6 +21,17 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   final _nickNameController = TextEditingController();
 
   int _currentStep = 0;
+  String? _passwordError;
+  String? _confirmPasswordError;
+  bool _isObscuredPassword = true;
+  bool _isObscuredConfirmPassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(_validatePasswords);
+    _confirmPasswordController.addListener(_validatePasswords);
+  }
 
   @override
   void dispose() {
@@ -32,6 +43,19 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
     _suerNameController.dispose();
     _nickNameController.dispose();
     super.dispose();
+  }
+
+  void _validatePasswords() {
+    setState(() {
+      _passwordError =
+          _passwordController.text.isEmpty ? 'Please enter a password' : null;
+
+      _confirmPasswordError = _confirmPasswordController.text.isEmpty
+          ? 'Please confirm your password'
+          : _confirmPasswordController.text != _passwordController.text
+              ? 'Passwords do not match'
+              : null;
+    });
   }
 
   Future<void> _onStepContinue() async {
@@ -153,32 +177,43 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
+                obscureText: _isObscuredPassword,
+                decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
+                  errorText: _passwordError,
+                  suffixIcon: IconButton(
+                    icon: Icon(_isObscuredPassword
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscuredPassword = !_isObscuredPassword;
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _confirmPasswordController,
-                decoration: const InputDecoration(
+                obscureText: _isObscuredConfirmPassword,
+                decoration: InputDecoration(
                   labelText: 'Confirm Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
+                  errorText: _confirmPasswordError,
+                  suffixIcon: IconButton(
+                    icon: Icon(_isObscuredConfirmPassword
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscuredConfirmPassword =
+                            !_isObscuredConfirmPassword;
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  return null;
-                },
               ),
             ],
           )),
