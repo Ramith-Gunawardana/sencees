@@ -5,7 +5,7 @@ class AppDefaultToast {
   static void show({
     required BuildContext context,
     required String title,
-    String? error,
+    String? description,
     ToastificationType type = ToastificationType.info,
     ToastificationStyle style = ToastificationStyle.flat,
     Duration autoCloseDuration = const Duration(seconds: 5),
@@ -16,7 +16,7 @@ class AppDefaultToast {
       type: type,
       style: style,
       title: Text(title),
-      description: Text(error ?? ""),
+      description: Text(description ?? ""),
       autoCloseDuration: autoCloseDuration,
       borderSide: borderSide,
       backgroundColor: Theme.of(context).dialogBackgroundColor,

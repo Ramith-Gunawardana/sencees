@@ -181,7 +181,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       AppDefaultToast.show(
         context: context,
         title: 'Failed to Login',
-        error: e.toString(),
+        description: e.toString(),
         type: ToastificationType.error,
       );
     } finally {
