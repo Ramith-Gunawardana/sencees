@@ -9,35 +9,13 @@ class RegisterController extends StateNotifier<UserModel?> {
 
   RegisterController(this.signUpRepo) : super(null);
 
-  Future<void> registerUser({
-    required String username,
-    required String password,
-    required String firstName,
-    required String lastName,
-    String? surname,
-    String? nickName,
-  }) async {
-    final response = await signUpRepo.signUp(
-      username: username,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-      surname: surname,
-      nickName: nickName,
-    );
+  Future<void> registerUser(UserModel user) async {
+    final response = await signUpRepo.signUp(user);
 
     if (response.statusCode == 201) {
       final successData = jsonDecode(response.body);
       successMessage = successData['message'];
-
-      state = UserModel(
-        username: username,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-        surname: surname,
-        nickName: nickName,
-      );
+      state = user;
     } else {
       final errorData = jsonDecode(response.body);
       final errorMessage = errorData['error'];

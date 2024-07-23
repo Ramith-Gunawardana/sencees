@@ -65,7 +65,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 12),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _isObscured,
