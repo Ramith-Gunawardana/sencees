@@ -11,7 +11,7 @@ class AppColors {
   static const appDisableColorLight = Color(0x7E9E9E9E);
   static const appDisableColorDark = Color(0x559E9E9E);
   static const appInputFelidColorLight = Color(0x229E9E9E);
-  static const appInputFelidColorDark = Color(0x219E9E9E);
+  static const appInputFelidColorDark = Color(0x179E9E9E);
   static const appToastColorLight = Color(0xCBFFFFFF);
   static const appToastColorDark = Color(0xCF040917);
 }
