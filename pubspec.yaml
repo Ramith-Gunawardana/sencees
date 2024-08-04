@@ -41,6 +41,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   http: ^1.2.1
   toastification: ^2.0.0
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
     - assets/splash/
     - assets/onboarding/
     - assets/images/
+    - assets/lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
