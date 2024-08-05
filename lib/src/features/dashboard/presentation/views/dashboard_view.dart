@@ -80,7 +80,7 @@ class _DashboardViewState extends State<DashboardView>
                 child: SizedBox(
                   height: 300,
                   child: Image.asset(
-                    'assets/images/dash_img2.png',
+                    'assets/images/dash_img3.png',
                     fit: BoxFit.cover, // Adjust how the image fits
                   ),
                 ),

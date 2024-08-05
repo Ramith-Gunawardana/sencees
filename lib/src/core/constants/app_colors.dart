@@ -9,7 +9,7 @@ class AppColors {
   static const appRed = Colors.red;
   static const appLightBlue = Color(0xD900649E);
   static const appLightGray = Color(0xFFDDDDDD);
-  static const appDarkGray = Colors.grey;
+  static const appDarkGray = Color(0xFF888888);
   static const appDisableColorLight = Color(0x7E9E9E9E);
   static const appDisableColorDark = Color(0x559E9E9E);
   static const appInputFelidColorLight = Color(0x229E9E9E);

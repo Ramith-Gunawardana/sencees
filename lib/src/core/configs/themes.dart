@@ -10,8 +10,7 @@ class AppThemes {
       dialogBackgroundColor: AppColors.appToastColorLight,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: Colors.grey,
-          textStyle: const TextStyle(fontWeight: FontWeight.w900),
+          foregroundColor: Colors.black,
         ),
       ),
       appBarTheme:
@@ -61,8 +60,7 @@ class AppThemes {
       dialogBackgroundColor: AppColors.appToastColorDark,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: Colors.grey,
-          textStyle: const TextStyle(fontWeight: FontWeight.w900),
+          foregroundColor: AppColors.appDarkGray,
         ),
       ),
       appBarTheme: const AppBarTheme(backgroundColor: AppColors.primaryDark),
