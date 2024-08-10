@@ -6,7 +6,10 @@ class CommunicationAssistView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Communication Assist')),
+      appBar: AppBar(
+          title: const Text(
+        'Communication Assist',
+      )),
       body: const Center(child: Text('Communication Assist Page')),
     );
   }

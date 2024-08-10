@@ -13,8 +13,9 @@ class AppThemes {
           foregroundColor: Colors.black,
         ),
       ),
-      appBarTheme:
-          const AppBarTheme(backgroundColor: AppColors.backgroundLight),
+      appBarTheme: const AppBarTheme(
+          backgroundColor: AppColors.backgroundLight,
+          titleTextStyle: TextStyle(fontSize: 14.0)),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
@@ -63,7 +64,9 @@ class AppThemes {
           foregroundColor: AppColors.appDarkGray,
         ),
       ),
-      appBarTheme: const AppBarTheme(backgroundColor: AppColors.primaryDark),
+      appBarTheme: const AppBarTheme(
+          backgroundColor: AppColors.primaryDark,
+          titleTextStyle: TextStyle(fontSize: 14.0)),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),

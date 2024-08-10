@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sencees/src/features/communication_analyzer/presentation/views/communication_analyzer_view.dart';
+import 'package:sencees/src/features/communication_assist/presentation/views/communication_assist_view.dart';
+import 'package:sencees/src/features/envirosens_aware/presentation/views/envirosens_aware_view.dart';
+import 'package:sencees/src/features/warnalert_aware/presentation/views/warnalert_aware_view.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -100,10 +104,10 @@ class _DashboardViewState extends State<DashboardView>
 
                     // Define the pages to navigate to
                     final pages = [
-                      const CommunicationAnalyzerPage(),
-                      const CommunicationAssistPage(),
-                      const WarnAlertAwarePage(),
-                      const EnviroSensAwarePage(),
+                      const CommunicationAnalyzerView(),
+                      const CommunicationAssistView(),
+                      const WarnAlertAwareView(),
+                      const EnviroSensAwareView(),
                     ];
 
                     return GestureDetector(
@@ -182,42 +186,6 @@ class CommunicationAnalyzerPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Communication Analyzer')),
       body: const Center(child: Text('Communication Analyzer Page')),
-    );
-  }
-}
-
-class CommunicationAssistPage extends StatelessWidget {
-  const CommunicationAssistPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Communication Assist')),
-      body: const Center(child: Text('Communication Assist Page')),
-    );
-  }
-}
-
-class EnviroSensAwarePage extends StatelessWidget {
-  const EnviroSensAwarePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('EnviroSens Aware')),
-      body: const Center(child: Text('EnviroSens Aware Page')),
-    );
-  }
-}
-
-class WarnAlertAwarePage extends StatelessWidget {
-  const WarnAlertAwarePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('WarnAlert Aware')),
-      body: const Center(child: Text('WarnAlert Aware Page')),
     );
   }
 }
