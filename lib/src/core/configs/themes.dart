@@ -15,7 +15,7 @@ class AppThemes {
       ),
       appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.backgroundLight,
-          titleTextStyle: TextStyle(fontSize: 14.0)),
+          titleTextStyle: TextStyle(fontSize: 14.0, color: Colors.black)),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),

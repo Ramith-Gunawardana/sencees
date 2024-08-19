@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_popup/flutter_popup.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sencees/src/features/communication_analyzer/presentation/views/communication_analyzer_view.dart';
 import 'package:sencees/src/features/communication_assist/presentation/views/communication_assist_view.dart';
@@ -51,10 +52,10 @@ class _DashboardViewState extends State<DashboardView>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 30),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +63,7 @@ class _DashboardViewState extends State<DashboardView>
                         Text(
                           "Hi! Good Morning ,",
                           style: TextStyle(
-                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                             color: Colors.grey,
                           ),
                         ),
@@ -74,9 +75,85 @@ class _DashboardViewState extends State<DashboardView>
                       ],
                     ),
                   ),
-                  CircleAvatar(
-                    radius: 25, // Adjust the radius as needed
-                    backgroundImage: AssetImage('assets/images/avatar.jpg'),
+                  CustomPopup(
+                    backgroundColor: Theme.of(context).dialogBackgroundColor,
+                    arrowColor: Theme.of(context).dialogBackgroundColor,
+                    content: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 100,
+                          height: 40,
+                          child: Row(
+                            children: [
+                              Icon(Icons.person_2_outlined),
+                              SizedBox(width: 8),
+                              Text(
+                                'Amount',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          height: 10,
+                          child: Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          height: 40,
+                          child: Row(
+                            children: [
+                              Icon(Icons.settings_outlined),
+                              SizedBox(width: 8),
+                              Text(
+                                'Settings',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          height: 10,
+                          child: Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          height: 40,
+                          child: Row(
+                            children: [
+                              Icon(Icons.logout),
+                              SizedBox(width: 8),
+                              Text(
+                                'Logout',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    child: const CircleAvatar(
+                      radius: 25, 
+                      backgroundImage: AssetImage('assets/images/avatar.jpg'),
+                    ),
                   ),
                 ],
               ),
@@ -85,7 +162,7 @@ class _DashboardViewState extends State<DashboardView>
                   height: 300,
                   child: Image.asset(
                     'assets/images/dash_img3.png',
-                    fit: BoxFit.cover, // Adjust how the image fits
+                    fit: BoxFit.cover, 
                   ),
                 ),
               ),
@@ -105,7 +182,7 @@ class _DashboardViewState extends State<DashboardView>
                     // Define the pages to navigate to
                     final pages = [
                       const CommunicationAnalyzerView(),
-                      const CommunicationAssistView(),
+                      CommunicationAssistView(),
                       const WarnAlertAwareView(),
                       const EnviroSensAwareView(),
                     ];
@@ -156,7 +233,7 @@ class _DashboardViewState extends State<DashboardView>
                                   Text(
                                     subtitles[index],
                                     style: const TextStyle(
-                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.grey,
                                     ),
                                   ),
@@ -174,18 +251,6 @@ class _DashboardViewState extends State<DashboardView>
           ),
         ),
       ),
-    );
-  }
-}
-
-class CommunicationAnalyzerPage extends StatelessWidget {
-  const CommunicationAnalyzerPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Communication Analyzer')),
-      body: const Center(child: Text('Communication Analyzer Page')),
     );
   }
 }
