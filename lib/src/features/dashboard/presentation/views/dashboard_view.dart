@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_popup/flutter_popup.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sencees/src/features/authentication/presentation/views/login_view.dart';
 import 'package:sencees/src/features/communication_analyzer/presentation/views/communication_analyzer_view.dart';
 import 'package:sencees/src/features/communication_assist/presentation/views/communication_assist_view.dart';
 import 'package:sencees/src/features/envirosens_aware/presentation/views/envirosens_aware_view.dart';
 import 'package:sencees/src/features/warnalert_aware/presentation/views/warnalert_aware_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -51,7 +53,7 @@ class _DashboardViewState extends State<DashboardView>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -78,27 +80,30 @@ class _DashboardViewState extends State<DashboardView>
                   CustomPopup(
                     backgroundColor: Theme.of(context).dialogBackgroundColor,
                     arrowColor: Theme.of(context).dialogBackgroundColor,
-                    content: const Column(
+                    content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 100,
-                          height: 40,
-                          child: Row(
-                            children: [
-                              Icon(Icons.person_2_outlined),
-                              SizedBox(width: 8),
-                              Text(
-                                'Amount',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                        InkWell(
+                          onTap: () async {},
+                          child: const SizedBox(
+                            width: 100,
+                            height: 40,
+                            child: Row(
+                              children: [
+                                Icon(Icons.person_2_outlined),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Amount',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 100,
                           height: 10,
                           child: Divider(
@@ -107,23 +112,26 @@ class _DashboardViewState extends State<DashboardView>
                             color: Colors.grey,
                           ),
                         ),
-                        SizedBox(
-                          width: 100,
-                          height: 40,
-                          child: Row(
-                            children: [
-                              Icon(Icons.settings_outlined),
-                              SizedBox(width: 8),
-                              Text(
-                                'Settings',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                        InkWell(
+                          onTap: () async {},
+                          child: const SizedBox(
+                            width: 100,
+                            height: 40,
+                            child: Row(
+                              children: [
+                                Icon(Icons.settings_outlined),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Settings',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 100,
                           height: 10,
                           child: Divider(
@@ -132,26 +140,39 @@ class _DashboardViewState extends State<DashboardView>
                             color: Colors.grey,
                           ),
                         ),
-                        SizedBox(
-                          width: 100,
-                          height: 40,
-                          child: Row(
-                            children: [
-                              Icon(Icons.logout),
-                              SizedBox(width: 8),
-                              Text(
-                                'Logout',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        InkWell(
+                          onTap: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            await prefs.remove("accessToken");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginView(),
                               ),
-                            ],
+                            );
+                          },
+                          child: const SizedBox(
+                            width: 100,
+                            height: 40,
+                            child: Row(
+                              children: [
+                                Icon(Icons.logout),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Logout',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                     child: const CircleAvatar(
-                      radius: 25, 
+                      radius: 25, // Adjust the radius as needed
                       backgroundImage: AssetImage('assets/images/avatar.jpg'),
                     ),
                   ),
@@ -162,7 +183,7 @@ class _DashboardViewState extends State<DashboardView>
                   height: 300,
                   child: Image.asset(
                     'assets/images/dash_img3.png',
-                    fit: BoxFit.cover, 
+                    fit: BoxFit.cover, // Adjust how the image fits
                   ),
                 ),
               ),
