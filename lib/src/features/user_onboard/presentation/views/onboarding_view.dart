@@ -24,7 +24,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomSheet: Container(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: isLastPage
             ? Padding(
@@ -49,10 +49,14 @@ class _OnboardingViewState extends State<OnboardingView> {
                   TextButton(
                       onPressed: () => pageController
                           .jumpToPage(controller.items.length - 1),
-                      style: TextButton.styleFrom(
-                        foregroundColor: AppColors.appDarkGray,
-                      ),
-                      child: const Text("Skip")),
+                      style: TextButton.styleFrom(),
+                      child: const Text(
+                        "Skip",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          color: AppColors.appDarkGray,
+                        ),
+                      )),
 
                   // Indicator
                   SmoothPageIndicator(
@@ -73,10 +77,14 @@ class _OnboardingViewState extends State<OnboardingView> {
                       onPressed: () => pageController.nextPage(
                           duration: const Duration(milliseconds: 600),
                           curve: Curves.easeIn),
-                      style: TextButton.styleFrom(
-                        foregroundColor: AppColors.appDarkGray,
-                      ),
-                      child: const Text("Next")),
+                      style: TextButton.styleFrom(),
+                      child: const Text(
+                        "Next",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          color: AppColors.appDarkGray,
+                        ),
+                      )),
                 ],
               ),
       ),

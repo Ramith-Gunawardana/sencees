@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sencees/src/core/components/app_default_button.dart';
 import 'package:sencees/src/core/components/app_default_toast.dart';
 import 'package:sencees/src/core/constants/app_colors.dart';
@@ -106,7 +107,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 ),
                 const SizedBox(height: 20),
                 _isLoading
-                    ? const CircularProgressIndicator()
+                    ? LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.grey, size: 60)
                     : AppDefaultButton(
                         text: "Login",
                         backgroundColor: AppColors.appLightBlue,
@@ -166,9 +168,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final username = _usernameController.text;
     final password = _passwordController.text;
 
-    try {
-      await ref.read(authControllerProvider).signIn(username, password);
-
+    await ref.read(authControllerProvider).signIn(username, password).then((_) {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
@@ -176,7 +176,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           builder: (context) => const DashboardView(),
         ),
       );
-    } catch (e) {
+    }).catchError((e) {
       if (!mounted) return;
       AppDefaultToast.show(
         context: context,
@@ -184,10 +184,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
         description: e.toString(),
         type: ToastificationType.error,
       );
-    } finally {
+    }).whenComplete(() {
       setState(() {
         _isLoading = false;
       });
-    }
+    });
   }
 }

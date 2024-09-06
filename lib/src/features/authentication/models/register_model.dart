@@ -27,6 +27,23 @@ class UserModel {
     required this.aboutMe,
   });
 
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      username: json['username'],
+      password: json['password'],
+      firstName: json['names']['f_name'],
+      lastName: json['names']['l_name'],
+      surname: json['names']['surname'],
+      nickName: json['names']['nick_name'],
+      birthDate: json['birth_date'],
+      address: json['address'],
+      mobileNumber: json['mobile_number'],
+      guardianMobileNumber: json['guardian_mobile_number'],
+      email: json['email'],
+      aboutMe: json['about_me'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'username': username,
