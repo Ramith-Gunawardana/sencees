@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_popup/flutter_popup.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sencees/src/features/authentication/controllers/user_controller.dart';
 import 'package:sencees/src/features/authentication/presentation/views/login_view.dart';
 import 'package:sencees/src/features/communication_analyzer/presentation/views/communication_analyzer_view.dart';
 import 'package:sencees/src/features/communication_assist/presentation/views/communication_assist_view.dart';
@@ -8,14 +10,14 @@ import 'package:sencees/src/features/envirosens_aware/presentation/views/enviros
 import 'package:sencees/src/features/warnalert_aware/presentation/views/warnalert_aware_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DashboardView extends StatefulWidget {
+class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
 
   @override
-  State<DashboardView> createState() => _DashboardViewState();
+  ConsumerState<DashboardView> createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends State<DashboardView>
+class _DashboardViewState extends ConsumerState<DashboardView>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
 
@@ -23,6 +25,7 @@ class _DashboardViewState extends State<DashboardView>
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+    ref.read(userControllerProvider.notifier).fetchUser();
   }
 
   @override
@@ -33,6 +36,8 @@ class _DashboardViewState extends State<DashboardView>
 
   @override
   Widget build(BuildContext context) {
+    final userState = ref.watch(userControllerProvider).asData?.value;
+
     final titles = [
       "Communication\nAnalyzer",
       "Communication\nAssist",
@@ -57,12 +62,12 @@ class _DashboardViewState extends State<DashboardView>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Hi! Good Morning ,",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -70,8 +75,8 @@ class _DashboardViewState extends State<DashboardView>
                           ),
                         ),
                         Text(
-                          "Manula Kavinda",
-                          style: TextStyle(
+                          '${userState?.firstName} ${userState?.lastName}',
+                          style: const TextStyle(
                               fontSize: 24.0, fontWeight: FontWeight.bold),
                         ),
                       ],
