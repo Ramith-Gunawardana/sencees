@@ -113,6 +113,8 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
 
     final chatController = ref.read(chatControllerProvider);
     final response = await chatController.sendMessage(uuid, message);
+    print("------------------------------------");
+    print(response);
 
     setState(() {
       _isLoading = false;

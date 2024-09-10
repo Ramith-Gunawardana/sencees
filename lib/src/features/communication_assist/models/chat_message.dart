@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ChatResponse {
   final String input;
   final List<String> answer;
@@ -12,7 +14,8 @@ class ChatResponse {
   factory ChatResponse.fromJson(Map<String, dynamic> json) {
     return ChatResponse(
       input: json['input'],
-      answer: List<String>.from(json['answer'].map((item) => item.toString())),
+      answer: List<String>.from(
+          jsonDecode(json['answer']).map((item) => item.toString())),
       chatHistory: List<ChatMessage>.from(
         json['chat_history'].map((x) => ChatMessage.fromJson(x)),
       ),
