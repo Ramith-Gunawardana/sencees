@@ -1,36 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:sencees/src/core/utils/Utils.dart';
+import 'package:sencees/src/features/communication_assist/controllers/chat_controller.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
-class CommunicationAssistView extends StatefulWidget {
+class CommunicationAssistView extends ConsumerStatefulWidget {
   const CommunicationAssistView({super.key});
 
   @override
-  State<CommunicationAssistView> createState() => _CommunicationAssistView();
+  ConsumerState<CommunicationAssistView> createState() =>
+      _CommunicationAssistView();
 }
 
-class _CommunicationAssistView extends State<CommunicationAssistView> {
+class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
   final SpeechToText _speechToText = SpeechToText();
+  final FlutterTts _flutterTts = FlutterTts();
   final TextEditingController _controller = TextEditingController();
 
   List<Map<String, String>> messages = [];
+  List<String> aiSuggestions = [];
   bool _speechEnabled = false;
   bool _speechAvailable = false;
+  bool _isLoading = false;
   String _currentWords = '';
+  late String uuid;
 
   @override
   void initState() {
     super.initState();
     _initSpeech();
+    _initTts();
+    uuid = Utils.generateUUID();
   }
 
   void _initSpeech() async {
     _speechAvailable = await _speechToText.initialize(
-        onError: (SpeechRecognitionError error) async {
-          debugPrint(error.errorMsg.toString());
-        },
-        onStatus: statusListener);
+      onError: (SpeechRecognitionError error) async {
+        debugPrint(error.errorMsg.toString());
+      },
+      onStatus: statusListener,
+    );
 
     if (!_speechAvailable) {
       debugPrint("Speech recognition initialization failed");
@@ -91,11 +103,24 @@ class _CommunicationAssistView extends State<CommunicationAssistView> {
     });
   }
 
-  void _sendUserMessage(String message) {
+  void _sendUserMessage(String message) async {
     if (message.trim().isEmpty) return;
-
     setState(() {
       messages.add({'role': 'user', 'message': message});
+      _isLoading = true;
+      aiSuggestions = [];
+    });
+
+    final chatController = ref.read(chatControllerProvider);
+    final response = await chatController.sendMessage(uuid, message);
+
+    setState(() {
+      _isLoading = false;
+      if (response?.answer != null) {
+        aiSuggestions = response!.answer;
+      } else {
+        aiSuggestions = [];
+      }
     });
   }
 
@@ -104,9 +129,37 @@ class _CommunicationAssistView extends State<CommunicationAssistView> {
 
     setState(() {
       messages.add({'role': 'ai', 'message': message});
+      aiSuggestions = [];
     });
 
     _controller.clear();
+  }
+
+  void _initTts() {
+    _flutterTts.setLanguage("en-US");
+    _flutterTts.setSpeechRate(0.5);
+    _flutterTts.setPitch(1.0);
+
+    // Set completion handler to restart speech recognition after TTS
+    _flutterTts.setCompletionHandler(() async {
+      await _startListening();
+    });
+  }
+
+  Future<void> _speak(String message) async {
+    // Stop speech recognition if it is active
+    if (_speechEnabled) {
+      await _stopListening();
+    }
+
+    // Speak the message
+    await _flutterTts.speak(message);
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop(); // Stop TTS when disposing
+    super.dispose();
   }
 
   @override
@@ -128,31 +181,76 @@ class _CommunicationAssistView extends State<CommunicationAssistView> {
       body: Column(
         children: [
           Expanded(
-            flex: 2, 
+            flex: 2,
             child: ListView.builder(
-              itemCount: messages.length,
+              itemCount: messages.length + (_isLoading ? 1 : 0),
               itemBuilder: (context, index) {
+                if (index >= messages.length) {
+                  return const Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                      child: Text(
+                        'AI is thinking...',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  );
+                }
+
                 final message = messages[index];
+                bool isUserMessage = message['role'] == 'user';
+
                 return Align(
-                  alignment: message['role'] == 'user'
+                  alignment: isUserMessage
                       ? Alignment.centerLeft
                       : Alignment.centerRight,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 5.0, horizontal: 10.0),
-                    child: Text(
-                      '${message['role'] == 'user' ? "User" : "AI"}: ${message['message'] ?? ''}',
-                      style: TextStyle(
-                        fontWeight: message['role'] == 'user'
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: isUserMessage
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.end,
+                      children: [
+                        if (!isUserMessage)
+                          IconButton(
+                            icon: const Icon(Icons.volume_up),
+                            onPressed: () => _speak(message['message'] ?? ''),
+                          ),
+                        Expanded(
+                          child: Text(
+                            '${isUserMessage ? "User" : "AI"}: ${message['message'] ?? ''}',
+                            style: TextStyle(
+                              fontWeight: isUserMessage
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
               },
             ),
           ),
+          if (aiSuggestions.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                spacing: 8.0,
+                children: aiSuggestions
+                    .map(
+                      (suggestion) => TextButton(
+                        onPressed: () => _sendAiMessage(suggestion),
+                        child: Text(suggestion),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -167,8 +265,7 @@ class _CommunicationAssistView extends State<CommunicationAssistView> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.send),
-                  onPressed: () =>
-                      _sendAiMessage(_controller.text), 
+                  onPressed: () => _sendAiMessage(_controller.text),
                 ),
               ],
             ),

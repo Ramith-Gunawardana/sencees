@@ -11,6 +11,7 @@ class UserRepo {
   Future<UserModel> getUser() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('accessToken');
+    print(token);
 
     if (token == null) {
       throw Exception('No token found');
