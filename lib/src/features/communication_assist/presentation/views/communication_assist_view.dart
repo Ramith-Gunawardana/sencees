@@ -179,7 +179,7 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
                       padding:
                           EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
                       child: Text(
-                        'AI is thinking...',
+                        "I'm Thinking...",
                         style: TextStyle(fontStyle: FontStyle.italic),
                       ),
                     ),
@@ -272,7 +272,7 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                      hintText: 'Type AI response...',
+                      hintText: 'Type Your Response...',
                     ),
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:sencees/src/core/components/app_default_button.dart';
 import 'package:sencees/src/core/constants/app_colors.dart';
+import 'package:sencees/src/features/communication_assist/presentation/views/communication_assist_view.dart';
 
 class CommunicationAnalyzerView extends StatelessWidget {
   const CommunicationAnalyzerView({super.key});
@@ -56,7 +57,13 @@ class CommunicationAnalyzerView extends StatelessWidget {
               text: 'Continue to Chat',
               backgroundColor: AppColors.appLightBlue,
               icon: Icons.chat_rounded,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CommunicationAssistView()),
+                );
+              },
             ),
           )
         ],
