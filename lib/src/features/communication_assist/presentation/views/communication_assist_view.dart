@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:sencees/src/core/constants/app_colors.dart';
 import 'package:sencees/src/core/utils/Utils.dart';
 import 'package:sencees/src/features/communication_assist/controllers/chat_controller.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
@@ -31,40 +33,28 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
   @override
   void initState() {
     super.initState();
-    _initSpeech();
+    _initStt();
     _initTts();
     uuid = Utils.generateUUID();
   }
 
-  void _initSpeech() async {
+  void _initStt() async {
     _speechAvailable = await _speechToText.initialize(
-      onError: (SpeechRecognitionError error) async {
-        debugPrint(error.errorMsg.toString());
+      onError: (SpeechRecognitionError error) async {},
+      onStatus: (String status) async {
+        debugPrint("status $status");
+        if (status == "done" && _speechEnabled) {
+          _sendUserMessage(_currentWords);
+          setState(() {
+            _currentWords = "";
+            _speechEnabled = false;
+          });
+
+          await Future.delayed(const Duration(milliseconds: 50));
+          await _startListening();
+        }
       },
-      onStatus: statusListener,
     );
-
-    if (!_speechAvailable) {
-      debugPrint("Speech recognition initialization failed");
-    } else {
-      debugPrint("Speech recognition initialized successfully");
-    }
-
-    setState(() {});
-  }
-
-  void statusListener(String status) async {
-    debugPrint("status $status");
-    if (status == "done" && _speechEnabled) {
-      _sendUserMessage(_currentWords);
-      setState(() {
-        _currentWords = "";
-        _speechEnabled = false;
-      });
-
-      await Future.delayed(const Duration(milliseconds: 50));
-      await _startListening();
-    }
   }
 
   Future _startListening() async {
@@ -113,8 +103,6 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
 
     final chatController = ref.read(chatControllerProvider);
     final response = await chatController.sendMessage(uuid, message);
-    print("------------------------------------");
-    print(response);
 
     setState(() {
       _isLoading = false;
@@ -137,12 +125,9 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
     _controller.clear();
   }
 
-  void _initTts() {
-    _flutterTts.setLanguage("en-US");
-    _flutterTts.setSpeechRate(0.5);
-    _flutterTts.setPitch(1.0);
-
-    // Set completion handler to restart speech recognition after TTS
+  void _initTts() async {
+    _flutterTts.setPitch(1.5);
+    _flutterTts.setSpeechRate(0.0);
     _flutterTts.setCompletionHandler(() async {
       await _startListening();
     });
@@ -160,7 +145,7 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
 
   @override
   void dispose() {
-    _flutterTts.stop(); // Stop TTS when disposing
+    _flutterTts.stop();
     super.dispose();
   }
 
@@ -222,12 +207,32 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
                             onPressed: () => _speak(message['message'] ?? ''),
                           ),
                         Expanded(
-                          child: Text(
-                            '${isUserMessage ? "User" : "AI"}: ${message['message'] ?? ''}',
-                            style: TextStyle(
-                              fontWeight: isUserMessage
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+                          child: ChatBubble(
+                            clipper: ChatBubbleClipper1(
+                              type: isUserMessage
+                                  ? BubbleType.receiverBubble
+                                  : BubbleType.sendBubble,
+                            ),
+                            backGroundColor: isUserMessage
+                                ? Colors.white
+                                : AppColors.appLightBlue,
+                            margin: const EdgeInsets.only(top: 20),
+                            child: Container(
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.7,
+                              ),
+                              child: Text(
+                                message['message'] ?? '',
+                                style: TextStyle(
+                                  color: isUserMessage
+                                      ? Colors.black
+                                      : Colors.white,
+                                  fontWeight: isUserMessage
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
+                              ),
                             ),
                           ),
                         ),

@@ -16,4 +16,5 @@ class AppColors {
   static const appInputFelidColorDark = Color(0x179E9E9E);
   static const appToastColorLight = Color(0xCBFFFFFF);
   static const appToastColorDark = Color(0xCF040917);
+    
 }

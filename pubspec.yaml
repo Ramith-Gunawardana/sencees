@@ -50,6 +50,10 @@ dependencies:
   uuid: ^4.5.0
   flutter_tts: ^4.0.2
   permission_handler: ^11.3.1
+  dart_openai: ^5.1.0
+  audioplayers: ^6.1.0
+  flutter_chat_bubble: ^2.0.2
+  avatar_glow: ^3.0.1
 
 dev_dependencies:
   flutter_test:

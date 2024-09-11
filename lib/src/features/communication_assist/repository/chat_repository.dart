@@ -28,6 +28,7 @@ class ChatRepo {
 
     if (response.statusCode == 200) {
       final responseBody = response.body;
+      print(responseBody);
 
       if (responseBody.isEmpty) {
         throw Exception('Empty response body');

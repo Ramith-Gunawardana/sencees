@@ -185,7 +185,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
               ),
               Center(
                 child: SizedBox(
-                  height: 300,
+                  height: 250,
                   child: Image.asset(
                     'assets/images/dash_img3.png',
                     fit: BoxFit.cover, // Adjust how the image fits
@@ -208,7 +208,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                     // Define the pages to navigate to
                     final pages = [
                       const CommunicationAnalyzerView(),
-                      CommunicationAssistView(),
+                      const CommunicationAssistView(),
                       const WarnAlertAwareView(),
                       const EnviroSensAwareView(),
                     ];
