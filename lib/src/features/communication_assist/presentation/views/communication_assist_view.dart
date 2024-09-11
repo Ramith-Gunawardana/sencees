@@ -252,6 +252,12 @@ class _CommunicationAssistView extends ConsumerState<CommunicationAssistView> {
                     .map(
                       (suggestion) => TextButton(
                         onPressed: () => _sendAiMessage(suggestion),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          backgroundColor: const Color.fromARGB(
+                              255, 239, 238, 238), // Text color
+                          // Adjust padding if needed
+                        ),
                         child: Text(suggestion),
                       ),
                     )
