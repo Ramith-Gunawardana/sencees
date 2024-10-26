@@ -31,11 +31,13 @@ class MyApp extends StatelessWidget {
 
   Widget _getInitialView() {
     if (!onboarding) {
-      return const OnboardingView();
+      return const DashboardView();
+      // return const OnboardingView();
     } else if (accessToken != null && accessToken!.isNotEmpty) {
       return const DashboardView();
     } else {
-      return const LoginView();
+      return const DashboardView();
+      // return const LoginView();
     }
   }
 }

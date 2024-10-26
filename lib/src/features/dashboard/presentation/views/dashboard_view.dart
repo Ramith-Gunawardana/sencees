@@ -210,7 +210,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                       const CommunicationAnalyzerView(),
                       CommunicationAssistView(),
                       const WarnAlertAwareView(),
-                      const EnviroSensAwareView(),
+                      const EnvirosensAware(),
                     ];
 
                     return GestureDetector(
